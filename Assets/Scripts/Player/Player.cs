@@ -11,9 +11,9 @@ public class Player : MonoBehaviour
     public float JumpForce;
     public Animator animator;
     public new Rigidbody2D rigidbody;
-    
+
     public Collider2D collider2d;
-    
+
     private Transform transformHealth;
     [SerializeField] private PlayerHealth healthBar;
     private float playerHealth = 1f;
@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     public Button btnResume;
     // Enemy
     public Transform enemyTransform;
-    
+
     void Start()
     {
         collider2d = GetComponent<Collider2D>();
@@ -53,20 +53,23 @@ public class Player : MonoBehaviour
             rigidbody.AddForce(new Vector2(0, JumpForce), ForceMode2D.Impulse);
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape)){
-		    Time.timeScale = 0;
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Time.timeScale = 0;
             myPanel.SetActive(true);
-        }	
+        }
 
-        if (Input.GetKeyDown(KeyCode.R)){
+        if (Input.GetKeyDown(KeyCode.R))
+        {
             Time.timeScale = 1;
             myPanel.SetActive(false);
         }
     }
 
     // Evento para reiniciar el juego "Muerte"
-    private void OnTriggerEnter2D(Collider2D collision) {
-        //
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        // Tag del objeto
         switch (collision.gameObject.tag)
         {
             // Si cae muere
@@ -78,22 +81,25 @@ public class Player : MonoBehaviour
 
             // Si tropieza con el enemigo
             case "touchEnemy":
-
-            bool isTrue = enemyTransform.position.y <= transform.position.y;
-            if (!isTrue){                
-                 // Disminuir la vida del jugador
-                playerHealth -= Enemy.EnemyDamage;                                
-                // Si la vida es menor a 0.1f, termina el juego
-                if (playerHealth < 0.1f)
+                // Si lo toca por la cabeza o los costados
+                bool isTrue = enemyTransform.position.y <= transform.position.y;
+                if (!isTrue)
                 {
-                    SceneManager.LoadScene("Main");
+                    // Disminuir la vida del jugador
+                    playerHealth -= Enemy.EnemyDamage;
+                    // Si la vida es menor a 0.1f, termina el juego
+                    if (playerHealth < 0.1f)
+                    {
+                        // Si la barra de vida está vacía
+                        SceneManager.LoadScene("Main");
 
-                    PlayerHeartScore.playerHeartScore -= 1;
+                        PlayerHeartScore.playerHeartScore -= 1;
+                    }
+                    // Enviar el daño a la barra de vida
+                    healthBar.setScaleSize(playerHealth);
                 }
-                // Enviar el daño a la barra de vida
-                healthBar.setScaleSize(playerHealth);
-            }               
                 break;
+
             case "heart":
                 //playerHeart += 1;
                 PlayerHeartScore.playerHeartScore += 1;
@@ -139,11 +145,10 @@ public class Player : MonoBehaviour
         }
     }
 
-
-    private void menuGameState(){
-
-            // Reanudar el juego
-            Time.timeScale = 1;
+    private void menuGameState()
+    {
+        // Reanudar el juego
+        Time.timeScale = 1;
 
     }
 }

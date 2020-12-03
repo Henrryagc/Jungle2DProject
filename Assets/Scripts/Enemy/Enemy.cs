@@ -13,6 +13,8 @@ public class Enemy : MonoBehaviour
     internal Collider2D _collider;
 
     public Transform playerTransform;
+
+
     void Awake(){
         _collider = GetComponent<Collider2D>();
     }
@@ -37,15 +39,16 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other) {
-        switch (other.gameObject.tag){
+    private void OnTriggerEnter2D(Collider2D collision) {
+        // Objeto con tag 
+        switch (collision.gameObject.tag){
             case "Player":
+            // Si Enemy.y es menor a Player.y en la colision
             bool isTrue = transform.position.y <= playerTransform.position.y;
-            Debug.Log("Enemy is true: " + isTrue); 
             if (isTrue){
                 GetComponent<SpriteRenderer>().enabled = false;
                 gameObject.transform.GetChild(0).gameObject.SetActive(true);
-                Destroy(gameObject, 2f);
+                Destroy(gameObject, 1f);
             }
             break;
         }
