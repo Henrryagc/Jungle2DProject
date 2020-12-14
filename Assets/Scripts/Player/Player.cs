@@ -24,19 +24,22 @@ public class Player : MonoBehaviour
     private int playerFoodStrawberry, playerFoodOrange, totalFood;
     // Menu
     public GameObject myPanel;
-    public Button btnResume;
+    public Button btnResume, btnQuit;
     // Enemy
     public Transform enemyTransform;
 
-    //
-    public bool isImpulse;
+    // impulse with trampoline
+    private bool isImpulse;
+
+    // scene number
+    public int numScene;
 
     void Start()
     {
         collider2d = GetComponent<Collider2D>();
         transformHealth = GameObject.FindGameObjectWithTag("PlayerHealth").transform;
         btnResume.onClick.AddListener(MenuGameState);
-
+        btnQuit.onClick.AddListener(QuitGame);
     }
 
     void Update()
@@ -69,14 +72,15 @@ public class Player : MonoBehaviour
             Time.timeScale = 1;
             myPanel.SetActive(false);
         }
-
+        // Touch trampolin
         if (isImpulse)
         {
             rigidbody.AddForce(new Vector2(0, .5f), ForceMode2D.Impulse);
         }
-
+        // Player position
         if (transform.position.y > 10f)
         {
+            // Cargar world 2
             SceneManager.LoadScene("World2");
         }
     }
@@ -90,11 +94,11 @@ public class Player : MonoBehaviour
         {
             // Si cae muere
             case "killZone":
-                SceneManager.LoadScene("World1");
+                SceneController(numScene);
+
                 // Se reinicia las manzanas recogidas por el jugador
                 PlayerHeartScore.playerHeartScore -= 1;
                 break;
-
             // Si tropieza con el enemigo
             case "touchEnemy":
                 // Si lo toca por la cabeza o los costados
@@ -107,8 +111,7 @@ public class Player : MonoBehaviour
                     if (playerHealth < 0.1f)
                     {
                         // Si la barra de vida está vacía
-                        SceneManager.LoadScene("World1");
-
+                        SceneController(numScene);
                         PlayerHeartScore.playerHeartScore -= 1;
                     }
                     // Enviar el daño a la barra de vida
@@ -134,13 +137,14 @@ public class Player : MonoBehaviour
                 totalFood += PlayerFood.playerFoodOrange;
                 break;
             case "floorTrampoline":
+                // estado de impulso
                 isImpulse = true;
                 break;
             default:
                 Debug.LogError("Player Collision default no trigger collision");
                 break;
         }
-
+       
         // Número de frutas en la canasta
         textAllFruit.text = (playerFoodStrawberry + playerFoodOrange).ToString();
 
@@ -161,7 +165,8 @@ public class Player : MonoBehaviour
         // Cantidad de juegos "Corazones" = 0
         if (PlayerHeartScore.playerHeartScore == 0)
         {
-            SceneManager.LoadScene("GameOver");
+            SceneController(-1); 
+            //SceneManager.LoadScene("GameOver");
         }
     }
 
@@ -170,5 +175,29 @@ public class Player : MonoBehaviour
         // Reanudar el juego
         Time.timeScale = 1;
 
+    }
+
+    private void SceneController(int number)
+    {
+        Debug.Log(number + " Scene Controller");
+        switch (number)
+        {
+            case -1:
+                SceneManager.LoadScene("GameOver");
+                break;
+            case 1:
+                SceneManager.LoadScene("World1");
+                break;
+            case 2:
+                SceneManager.LoadScene("World2");
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void QuitGame()
+    {
+        Application.Quit();
     }
 }

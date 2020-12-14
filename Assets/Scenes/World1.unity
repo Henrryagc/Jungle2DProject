@@ -7596,8 +7596,9 @@ MonoBehaviour:
   textAllFruit: {fileID: 1345793935}
   myPanel: {fileID: 676031600}
   btnResume: {fileID: 1336732538}
+  btnQuit: {fileID: 1795110095}
   enemyTransform: {fileID: 2016987673}
-  impulse: 0
+  numScene: 1
 --- !u!1 &1021995240
 GameObject:
   m_ObjectHideFlags: 0
@@ -7983,7 +7984,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1082798578}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.577966, y: 2.0399997, z: -10}
+  m_LocalPosition: {x: -6.5777373, y: 2.0399997, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1258344128}
@@ -10191,7 +10192,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.779661, y: 1}
+    m_SensorSize: {x: 1.7773722, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -10208,7 +10209,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1415860671}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.577966, y: 2.0399997, z: -10}
+  m_LocalPosition: {x: -6.5777373, y: 2.0399997, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 766243429}

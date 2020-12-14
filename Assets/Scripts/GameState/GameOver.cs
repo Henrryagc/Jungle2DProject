@@ -16,7 +16,7 @@ public class GameOver : MonoBehaviour
 	
 	void TaskOnClick(){
         PlayerHeartScore.playerHeartScore = 3;
-		SceneManager.LoadScene("Main");
+		SceneManager.LoadScene("World1");
 	}
 
     void QuitGame()
