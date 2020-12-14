@@ -11,7 +11,7 @@ public class PlayerHealth : MonoBehaviour
         transformBar = transform.Find("Barra");
     }
 
-    public void setScaleSize(float sizeNormalized)
+    public void SetScaleSize(float sizeNormalized)
     {
         transformBar.localScale = new Vector3(sizeNormalized, 1f);
     }

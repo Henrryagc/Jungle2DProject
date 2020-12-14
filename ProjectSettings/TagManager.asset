@@ -11,6 +11,8 @@ TagManager:
   - orange
   - strawberry
   - Menu
+  - floorTrampoline
+  - changeScene
   layers:
   - Default
   - TransparentFX

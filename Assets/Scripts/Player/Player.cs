@@ -15,7 +15,8 @@ public class Player : MonoBehaviour
     public Collider2D collider2d;
 
     private Transform transformHealth;
-    [SerializeField] private PlayerHealth healthBar;
+    [SerializeField]
+    public PlayerHealth healthBar;
     private float playerHealth = 1f;
 
     public TextMeshProUGUI textStrawberry, textOrange, textAllFruit;
@@ -27,11 +28,15 @@ public class Player : MonoBehaviour
     // Enemy
     public Transform enemyTransform;
 
+    //
+    public bool isImpulse;
+
     void Start()
     {
         collider2d = GetComponent<Collider2D>();
         transformHealth = GameObject.FindGameObjectWithTag("PlayerHealth").transform;
-        btnResume.onClick.AddListener(menuGameState);
+        btnResume.onClick.AddListener(MenuGameState);
+
     }
 
     void Update()
@@ -52,29 +57,40 @@ public class Player : MonoBehaviour
             // Hacer que el jugador salte
             rigidbody.AddForce(new Vector2(0, JumpForce), ForceMode2D.Impulse);
         }
-
+        // Pausar el juego
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Time.timeScale = 0;
             myPanel.SetActive(true);
         }
-
+        // Para reanudar el juego
         if (Input.GetKeyDown(KeyCode.R))
         {
             Time.timeScale = 1;
             myPanel.SetActive(false);
+        }
+
+        if (isImpulse)
+        {
+            rigidbody.AddForce(new Vector2(0, .5f), ForceMode2D.Impulse);
+        }
+
+        if (transform.position.y > 10f)
+        {
+            SceneManager.LoadScene("World2");
         }
     }
 
     // Evento para reiniciar el juego "Muerte"
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //Debug.Log(collision.gameObject.tag);
         // Tag del objeto
         switch (collision.gameObject.tag)
         {
             // Si cae muere
             case "killZone":
-                SceneManager.LoadScene("Main");
+                SceneManager.LoadScene("World1");
                 // Se reinicia las manzanas recogidas por el jugador
                 PlayerHeartScore.playerHeartScore -= 1;
                 break;
@@ -91,12 +107,12 @@ public class Player : MonoBehaviour
                     if (playerHealth < 0.1f)
                     {
                         // Si la barra de vida está vacía
-                        SceneManager.LoadScene("Main");
+                        SceneManager.LoadScene("World1");
 
                         PlayerHeartScore.playerHeartScore -= 1;
                     }
                     // Enviar el daño a la barra de vida
-                    healthBar.setScaleSize(playerHealth);
+                    healthBar.SetScaleSize(playerHealth);
                 }
                 break;
 
@@ -117,7 +133,11 @@ public class Player : MonoBehaviour
                 //
                 totalFood += PlayerFood.playerFoodOrange;
                 break;
+            case "floorTrampoline":
+                isImpulse = true;
+                break;
             default:
+                Debug.LogError("Player Collision default no trigger collision");
                 break;
         }
 
@@ -135,7 +155,7 @@ public class Player : MonoBehaviour
             }
 
             // Enviar el daño a la barra de vida
-            healthBar.setScaleSize(playerHealth);
+            healthBar.SetScaleSize(playerHealth);
         }
 
         // Cantidad de juegos "Corazones" = 0
@@ -145,7 +165,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void menuGameState()
+    private void MenuGameState()
     {
         // Reanudar el juego
         Time.timeScale = 1;
